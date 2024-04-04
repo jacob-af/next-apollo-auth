@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -13,10 +11,11 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import { useMutation } from "@apollo/client";
-import { cookies } from "next/headers";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { LOGIN } from "@/graphql/mutations/auth";
+import { getClient } from "@/lib/client";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
 function Copyright(props: any) {
   return (
@@ -39,22 +38,30 @@ function Copyright(props: any) {
 // TODO remove, this demo shouldn't need to reset the theme.
 //const defaultTheme = createTheme();
 
-export default function LogInSide() {
-  const [mutate, { loading: mutationLoading }] = useMutation(LOGIN);
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const result: any = await mutate({
-      variables: {
-        loginInput: {
-          email: data.get("email"),
-          password: data.get("password")
-        }
+const login = async (data: FormData) => {
+  console.log("ding");
+  const client = getClient();
+  const result: any = await client.mutate({
+    mutation: LOGIN,
+    variables: {
+      loginInput: {
+        email: data.get("email"),
+        password: data.get("password")
       }
-    });
-    console.log(result);
-  };
+    }
+  });
+  console.log(result.data.login.user);
+
+  cookies().set("ACCESS_TOKEN", result.data.login.accessToken, {
+    expires: new Date(Date.now() + 10 * 1000)
+  });
+  cookies().set("REFRESH_TOKEN", result.data.login.refreshToken, {
+    expires: new Date(Date.now() + 50 * 1000)
+  });
+};
+
+export default async function LogInSide() {
+  //const [mutate, { loading: mutationLoading }] = useMutation(LOGIN);
 
   return (
     //<ThemeProvider theme={defaultTheme}>
@@ -79,8 +86,13 @@ export default function LogInSide() {
           </Typography>
           <Box
             component="form"
+            action={async formData => {
+              "use server";
+              await login(formData);
+              redirect("/dashboard");
+            }}
             noValidate
-            onSubmit={handleSubmit}
+            //onSubmit={handleSubmit}
             sx={{ mt: 1 }}
           >
             <TextField
@@ -139,10 +151,6 @@ export default function LogInSide() {
         sx={{
           backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
           backgroundRepeat: "no-repeat",
-          backgroundColor: t =>
-            t.palette.mode === "light"
-              ? t.palette.grey[50]
-              : t.palette.grey[900],
           backgroundSize: "cover",
           backgroundPosition: "center"
         }}

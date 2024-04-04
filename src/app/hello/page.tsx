@@ -37,7 +37,7 @@ const LOGIN: TypedDocumentNode<{
   }
 `;
 
-export const Hello = () => {
+export default function Hello() {
   const [queryRef] = useBackgroundQuery(HELLO);
 
   return (
@@ -45,9 +45,9 @@ export const Hello = () => {
       <Poll queryRef={queryRef} />
     </Suspense>
   );
-};
+}
 
-const Poll = ({ queryRef }: any) => {
+export function Poll({ queryRef }: any): any {
   const { data } = useReadQuery(queryRef);
   const [showResults, setShowResults] = useState("Nothing Yet");
   const [mutate, { loading: mutationLoading }] = useMutation(LOGIN);
@@ -76,4 +76,4 @@ const Poll = ({ queryRef }: any) => {
       <div>{showResults}</div>
     </div>
   );
-};
+}

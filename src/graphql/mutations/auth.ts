@@ -19,3 +19,19 @@ export const LOGIN: TypedDocumentNode<{
     }
   }
 `;
+
+export const NEW_TOKENS: TypedDocumentNode<{
+  userId: string;
+  refreshToken: string;
+  user: {
+    authToken: string;
+    refreshToken: string;
+  };
+}> = gql`
+  mutation Mutation($userId: ID, $refreshToken: String) {
+    getNewTokens(userId: $userId, refreshToken: $refreshToken) {
+      accessToken
+      refreshToken
+    }
+  }
+`;
