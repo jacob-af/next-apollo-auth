@@ -1,0 +1,127 @@
+type AuthPayload {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+input CreateUserInput {
+  userName: String!
+  email: EmailAddress!
+  password: String!
+}
+
+input LoginInput {
+  email: EmailAddress!
+  password: String!
+}
+
+type LogoutResponse {
+  loggedOut: Boolean!
+}
+
+type NewTokenResponse {
+  accessToken: String!
+  refreshToken: String!
+}
+
+type Query {
+  hello: String!
+  ingredients: [Ingredient]!
+  ingredient(id: Int!): Ingredient
+  allUsers: [User]!
+  userById(id: ID!): User
+}
+
+type Mutation {
+  login(loginInput: LoginInput!): AuthPayload
+  signup(createUserInput: CreateUserInput!): AuthPayload
+  logout(userId: ID!): LogoutResponse
+  getNewTokens(userId: ID, refreshToken: String): NewTokenResponse
+  createIngredient(createIngredientInput: CreateIngredientInput!): Ingredient!
+  createManyIngredient(createIngredientInputs: [CreateIngredientInput]!): StatusMessage!
+  updateIngredient(updateIngredientInput: UpdateIngredientInput!): Ingredient!
+  removeIngredient(id: String!): Ingredient
+  followUser(followId: String!, relationship: Relationship): StatusMessage
+  unFollowUser(unfollowId: String!): StatusMessage
+  blockUser(blockId: String!): StatusMessage
+  unblockUser(unblockId: String!): StatusMessage
+}
+
+enum Relationship {
+  Favorite
+  Close
+  Following
+  Blocked
+}
+
+type Ingredient {
+  id: ID!
+  name: String!
+  description: String
+}
+
+input CreateIngredientInput {
+  name: String!
+  description: String
+}
+
+input UpdateIngredientInput {
+  id: ID!
+  name: String!
+  description: String
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+"""
+A field whose value conforms to the standard internet email address format as specified in HTML Spec: https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address.
+"""
+scalar EmailAddress
+
+type User {
+  id: ID!
+  userName: String!
+  email: EmailAddress!
+  dateJoined: DateTime
+  lastEdited: DateTime
+  accessToken: String
+  refreshToken: String
+  following: [Following]
+  followedBy: [Follower]
+}
+
+input UpdateUserInput {
+  id: ID!
+  userName: String
+  email: String
+}
+
+type Following {
+  id: ID!
+  userName: String!
+  email: EmailAddress!
+  dateJoined: DateTime
+  lastEdited: DateTime
+  relationship: Relationship
+}
+
+type Follower {
+  id: ID!
+  userName: String!
+  email: EmailAddress!
+  dateJoined: DateTime
+  lastEdited: DateTime
+}
+
+type StatusMessage {
+  message: String
+}
+
+type FollowReturn {
+  following: String
+  relationship: Relationship
+  status: StatusMessage
+}

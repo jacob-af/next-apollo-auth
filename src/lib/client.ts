@@ -2,6 +2,7 @@
 
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc";
+import { getToken } from "next-auth/jwt";
 //import { registerApolloClient } from "@apollo/client-react-streaming";
 
 export const { getClient } = registerApolloClient(() => {

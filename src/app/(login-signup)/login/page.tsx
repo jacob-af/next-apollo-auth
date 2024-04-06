@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -11,11 +13,9 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { LOGIN } from "@/graphql/mutations/auth";
-import { getClient } from "@/lib/client";
-import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
+//import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 function Copyright(props: any) {
   return (
@@ -38,30 +38,28 @@ function Copyright(props: any) {
 // TODO remove, this demo shouldn't need to reset the theme.
 //const defaultTheme = createTheme();
 
-const login = async (data: FormData) => {
-  console.log("ding");
-  const client = getClient();
-  const result: any = await client.mutate({
-    mutation: LOGIN,
-    variables: {
-      loginInput: {
-        email: data.get("email"),
-        password: data.get("password")
-      }
-    }
-  });
-  console.log(result.data.login.user);
+// cookies().set("ACCESS_TOKEN", result.data.login.accessToken, {
+//   expires: new Date(Date.now() + 10 * 1000)
+// });
+// cookies().set("REFRESH_TOKEN", result.data.login.refreshToken, {
+//   expires: new Date(Date.now() + 50 * 1000)
+// });
 
-  cookies().set("ACCESS_TOKEN", result.data.login.accessToken, {
-    expires: new Date(Date.now() + 10 * 1000)
-  });
-  cookies().set("REFRESH_TOKEN", result.data.login.refreshToken, {
-    expires: new Date(Date.now() + 50 * 1000)
-  });
-};
-
-export default async function LogInSide() {
+export default function LogInSide() {
+  const router = useRouter();
   //const [mutate, { loading: mutationLoading }] = useMutation(LOGIN);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const res = await signIn("credentials", {
+      email: data.get("email"),
+      password: data.get("password"),
+      redirect: false
+    });
+    console.log(res);
+
+    router.push("/dashboard");
+  };
 
   return (
     //<ThemeProvider theme={defaultTheme}>
@@ -86,13 +84,8 @@ export default async function LogInSide() {
           </Typography>
           <Box
             component="form"
-            action={async formData => {
-              "use server";
-              await login(formData);
-              redirect("/dashboard");
-            }}
+            onSubmit={handleSubmit}
             noValidate
-            //onSubmit={handleSubmit}
             sx={{ mt: 1 }}
           >
             <TextField

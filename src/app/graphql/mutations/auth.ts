@@ -1,13 +1,7 @@
+import { AuthPayload, NewTokenResponse } from "@/__generated__/graphql";
 import { gql, TypedDocumentNode } from "@apollo/client";
 
-export const LOGIN: TypedDocumentNode<{
-  accessToken: string;
-  refreshToken: string;
-  user: {
-    id: string;
-    userName: string;
-  };
-}> = gql`
+export const LOGIN: TypedDocumentNode<AuthPayload> = gql`
   mutation Mutation($loginInput: LoginInput!) {
     login(loginInput: $loginInput) {
       accessToken
@@ -15,19 +9,13 @@ export const LOGIN: TypedDocumentNode<{
       user {
         id
         userName
+        email
       }
     }
   }
 `;
 
-export const NEW_TOKENS: TypedDocumentNode<{
-  userId: string;
-  refreshToken: string;
-  user: {
-    authToken: string;
-    refreshToken: string;
-  };
-}> = gql`
+export const NEW_TOKENS: TypedDocumentNode<NewTokenResponse> = gql`
   mutation Mutation($userId: ID, $refreshToken: String) {
     getNewTokens(userId: $userId, refreshToken: $refreshToken) {
       accessToken

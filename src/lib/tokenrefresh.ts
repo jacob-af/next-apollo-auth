@@ -1,10 +1,9 @@
 import { cookies } from "next/headers";
-import { NEW_TOKENS } from "@/graphql/mutations/auth";
+import { NEW_TOKENS } from "../app/graphql/mutations/auth";
 import { getClient } from "@/lib/client";
 
 export default async function tokenrefresh(refreshToken: string) {
-  const client = getClient();
-  const result: any = await client.mutate({
+  const result: any = await getClient().mutate({
     mutation: NEW_TOKENS,
     variables: {
       refreshToken: refreshToken
