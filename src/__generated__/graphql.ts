@@ -99,7 +99,7 @@ export type Mutation = {
   createIngredient: Ingredient;
   createManyIngredient: StatusMessage;
   followUser?: Maybe<StatusMessage>;
-  getNewTokens?: Maybe<NewTokenResponse>;
+  getNewTokens?: Maybe<AuthPayload>;
   login?: Maybe<AuthPayload>;
   logout?: Maybe<LogoutResponse>;
   removeIngredient?: Maybe<Ingredient>;

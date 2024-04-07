@@ -1,10 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
-import MuiDrawer from "@mui/material/Drawer";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import MuiAppBar, { AppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
@@ -18,59 +16,11 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { mainListItems, secondaryListItems } from "./components/listItems";
 import Link from "@mui/material/Link";
 import BottomNavBar from "./components/BottomNavBar";
+import AreYouLoggedIn from "./components/AreYouLoggedIn";
+import { Drawer } from "./components/Drawer";
+import { AppBar } from "./components/AppBar";
 
-const drawerWidth = 240;
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: prop => prop !== "open"
-})<AppBarProps & { open?: boolean }>(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(["width", "margin"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen
-  }),
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
-  })
-}));
-
-const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: prop => prop !== "open"
-})(({ theme, open }) => ({
-  "& .MuiDrawer-paper": {
-    [theme.breakpoints.up("sm")]: {
-      position: "relative"
-    },
-    whiteSpace: "nowrap",
-    width: drawerWidth,
-
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.easeInOut,
-      duration: theme.transitions.duration.enteringScreen
-    }),
-    boxSizing: "border-box",
-    ...(!open && {
-      overflowX: "hidden",
-      transition: theme.transitions.create("width", {
-        easing: theme.transitions.easing.easeInOut,
-        duration: theme.transitions.duration.leavingScreen
-      }),
-      width: theme.spacing(7),
-      [theme.breakpoints.only("xs")]: {
-        display: "none"
-      },
-      [theme.breakpoints.up("sm")]: {
-        width: theme.spacing(9),
-        position: "relative"
-      }
-    })
-  }
-}));
+export const drawerWidth = 240;
 
 const defaultTheme = createTheme({});
 
@@ -83,41 +33,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: "flex", height: 1 }}>
-        <AppBar position="fixed" open={open}>
-          <Toolbar
-            sx={{
-              pr: "0px",
-              bgcolor: "#000"
-            }}
-          >
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
-              sx={{
-                ...(open && { display: "none" })
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              align="center"
-              sx={{ flexGrow: 1 }}
-            >
-              Back Pocket
-            </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-          </Toolbar>
-        </AppBar>
+        {appBarContent(open, toggleDrawer)}
         <Drawer variant="permanent" open={open}>
           <Toolbar
             sx={{
@@ -144,10 +60,6 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
         <Box
           component="main"
           sx={{
-            backgroundColor: theme =>
-              theme.palette.mode === "light"
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
             flexGrow: 1,
             height: 1,
             overflow: "auto",
@@ -162,5 +74,45 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
         </Box>
       </Box>
     </ThemeProvider>
+  );
+}
+function appBarContent(open: boolean, toggleDrawer: () => void) {
+  return (
+    <AppBar position="fixed" open={open}>
+      <Toolbar
+        sx={{
+          pr: "0px",
+          bgcolor: "#000"
+        }}
+      >
+        <IconButton
+          edge="start"
+          color="inherit"
+          aria-label="open drawer"
+          onClick={toggleDrawer}
+          sx={{
+            ...(open && { display: "none" })
+          }}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography
+          component="h1"
+          variant="h6"
+          color="inherit"
+          noWrap
+          align="center"
+          sx={{ flexGrow: 1 }}
+        >
+          Back Pocket
+        </Typography>
+        <AreYouLoggedIn />
+        <IconButton color="inherit">
+          <Badge badgeContent={4} color="secondary">
+            <NotificationsIcon />
+          </Badge>
+        </IconButton>
+      </Toolbar>
+    </AppBar>
   );
 }

@@ -15,11 +15,38 @@ export const LOGIN: TypedDocumentNode<AuthPayload> = gql`
   }
 `;
 
-export const NEW_TOKENS: TypedDocumentNode<NewTokenResponse> = gql`
-  mutation Mutation($userId: ID, $refreshToken: String) {
-    getNewTokens(userId: $userId, refreshToken: $refreshToken) {
+export const SIGNUP: TypedDocumentNode<AuthPayload> = gql`
+  mutation Signup($createUserInput: CreateUserInput!) {
+    signup(createUserInput: $createUserInput) {
       accessToken
       refreshToken
+      user {
+        email
+        id
+        userName
+      }
+    }
+  }
+`;
+
+export const NEW_TOKENS: TypedDocumentNode<AuthPayload> = gql`
+  mutation GetTokens($refreshToken: String) {
+    getNewTokens(refreshToken: $refreshToken) {
+      accessToken
+      refreshToken
+      user {
+        email
+        id
+        userName
+      }
+    }
+  }
+`;
+
+export const LOG_OUT: TypedDocumentNode<string> = gql`
+  mutation Mutation($userId: ID!) {
+    logout(userId: $userId) {
+      loggedOut
     }
   }
 `;

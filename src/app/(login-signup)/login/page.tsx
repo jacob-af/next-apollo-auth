@@ -13,52 +13,28 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-//import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
-// TODO remove, this demo shouldn't need to reset the theme.
-//const defaultTheme = createTheme();
-
-// cookies().set("ACCESS_TOKEN", result.data.login.accessToken, {
-//   expires: new Date(Date.now() + 10 * 1000)
-// });
-// cookies().set("REFRESH_TOKEN", result.data.login.refreshToken, {
-//   expires: new Date(Date.now() + 50 * 1000)
-// });
+import { Copyright } from "../../components/Copyright";
 
 export default function LogInSide() {
   const router = useRouter();
-  //const [mutate, { loading: mutationLoading }] = useMutation(LOGIN);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log("why?");
     const data = new FormData(event.currentTarget);
-    const res = await signIn("credentials", {
-      email: data.get("email"),
-      password: data.get("password"),
-      redirect: false
-    });
-    console.log(res);
-
-    router.push("/dashboard");
+    try {
+      const res = await signIn("credentials", {
+        email: data.get("email"),
+        password: data.get("password"),
+        redirect: false
+      });
+      console.log(res);
+      router.push("/dashboard");
+    } catch (error) {
+      console.log(error);
+      return;
+    }
   };
 
   return (
@@ -96,7 +72,6 @@ export default function LogInSide() {
               label="Email Address"
               name="email"
               autoComplete="email"
-              autoFocus
             />
             <TextField
               margin="normal"

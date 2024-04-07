@@ -1,6 +1,6 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-
-import { request } from "graphql-request";
+import { getClient } from "@/lib/client";
+//import { request } from "graphql-request";
 import { LOGIN } from "../../../graphql/mutations/auth";
 
 const uri = "http://localhost:4000/graphql";
@@ -16,20 +16,25 @@ export const credentialsProvider = CredentialsProvider({
     password: { label: "Password", type: "password" }
   },
   async authorize(credentials, req) {
-    const { login }: any = await request(uri, LOGIN, {
-      loginInput: {
-        email: credentials?.email,
-        password: credentials?.password
+    const client = await getClient();
+    const { data }: any = await client.mutate({
+      mutation: LOGIN,
+      variables: {
+        loginInput: {
+          email: credentials?.email,
+          password: credentials?.password
+        }
       }
     });
-    if (login) {
-      console.log("ding-tong");
+    console.log(data, ": data");
+    if (data?.login) {
       return {
-        accessToken: login.accessToken,
-        refreshToken: login.refreshToken,
-        id: login.user.id,
-        email: login.user.email,
-        name: login.user.userName
+        accessToken: data.login.accessToken,
+        refreshToken: data.login.refreshToken,
+        accessTokenExpires: Date.now() + 10000,
+        id: data.login.user.id,
+        email: data.login.user.email,
+        name: data.login.user.userName
       };
     } else {
       return null;

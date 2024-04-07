@@ -10,7 +10,9 @@ export const ALL_USERS: TypedDocumentNode<User[]> = gql`
   }
 `;
 
-export const ALL_INGREDIENTS: TypedDocumentNode<Ingredient[]> = gql`
+export const ALL_INGREDIENTS: TypedDocumentNode<{
+  ingredients: Ingredient[];
+}> = gql`
   query Ingredients {
     ingredients {
       description

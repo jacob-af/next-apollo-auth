@@ -2,14 +2,20 @@
 
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc";
-import { getToken } from "next-auth/jwt";
-//import { registerApolloClient } from "@apollo/client-react-streaming";
+import { auth } from "@/app/components/auth";
 
-export const { getClient } = registerApolloClient(() => {
+export const { getClient } = registerApolloClient(async () => {
+  const session = await auth();
+
   return new ApolloClient({
     cache: new InMemoryCache(),
     link: new HttpLink({
-      uri: "http://localhost:4000/graphql"
+      uri: process.env.GQL_API_URL,
+      headers: {
+        authorization: session?.user.accessToken
+          ? `Bearer ${session?.user.accessToken}`
+          : ""
+      }
     })
   });
 });

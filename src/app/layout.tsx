@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import SessionProvider from "@/app/components/SessionProvider";
 import { getSession } from "next-auth/react";
-import { ApolloWrapper } from "./apollo/ApolloWrapper";
+import { ApolloWrapper } from "./components/ApolloWrapper";
 
 import { Session } from "next-auth";
 
