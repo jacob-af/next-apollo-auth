@@ -19,6 +19,7 @@ import BottomNavBar from "./components/BottomNavBar";
 import AreYouLoggedIn from "./components/AreYouLoggedIn";
 import { Drawer } from "./components/Drawer";
 import { AppBar } from "./components/AppBar";
+import SignOutButton from "./components/SignOutButton";
 
 export const drawerWidth = 240;
 
@@ -106,6 +107,7 @@ function appBarContent(open: boolean, toggleDrawer: () => void) {
         >
           Back Pocket
         </Typography>
+        <SignOutButton />
         <AreYouLoggedIn />
         <IconButton color="inherit">
           <Badge badgeContent={4} color="secondary">
