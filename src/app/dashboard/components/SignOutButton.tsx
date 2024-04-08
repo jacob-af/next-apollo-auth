@@ -4,24 +4,39 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { useMutation } from "@apollo/client";
 import { LOG_OUT } from "../../graphql/mutations/auth";
+import { useRouter } from "next/navigation";
 
 function Button() {
+  const router = useRouter();
   const { data: session } = useSession();
   const [logOut, { loading }] = useMutation(LOG_OUT);
 
   const onClick = async () => {
-    await logOut({
-      variables: { userId: session?.user.id },
-      context: {
-        headers: {
-          Authorization: session?.user.accessToken
-            ? `Bearer ${session?.user.accessToken}`
-            : ""
-        }
+    try {
+      if (session) {
+        await logOut({
+          variables: { userId: session?.user.id },
+          context: {
+            headers: {
+              Authorization: session?.user.accessToken
+                ? `Bearer ${session?.user?.accessToken}`
+                : ""
+            }
+          },
+          onCompleted: () => {
+            signOut({ callbackUrl: process.env.NEXTAUTH_URL, redirect: true });
+          }
+        });
       }
-    });
-
-    signOut();
+      return;
+    } catch (err) {
+      console.log(err);
+      return;
+    }
+    if (!loading) {
+      signOut({ redirect: false });
+      router.push("/");
+    }
   };
 
   if (session) {

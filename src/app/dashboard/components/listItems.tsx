@@ -25,19 +25,19 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Recipes" />
     </ListItemButton>
-    <ListItemButton component={Link} href="recipeBook">
+    <ListItemButton component={Link} href="/dashboard/recipeBook">
       <ListItemIcon>
         <MenuBookIcon sx={{ color: "#FFF" }} />
       </ListItemIcon>
       <ListItemText primary="RecipeBooks" />
     </ListItemButton>
-    <ListItemButton component={Link} href="inventory">
+    <ListItemButton component={Link} href="/dashboard/inventory">
       <ListItemIcon>
         <LiquorIcon sx={{ color: "#FFF" }} />
       </ListItemIcon>
       <ListItemText primary="Inventory" />
     </ListItemButton>
-    <ListItemButton component={Link} href="crew">
+    <ListItemButton component={Link} href="/dashboard/crew">
       <ListItemIcon>
         <GroupsIcon sx={{ color: "#FFF" }} />
       </ListItemIcon>

@@ -1,17 +1,11 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/app/components/auth";
 
-export default async function ProtectedRoute() {
+export default async function RecipeBook() {
   const session = await auth();
   if (!session || !session.user) {
     redirect("/");
   }
 
-  return (
-    <div>
-      This is a protected route.
-      <br />
-      You will only see this if you are authenticated.
-    </div>
-  );
+  return <div>Recipe Book</div>;
 }

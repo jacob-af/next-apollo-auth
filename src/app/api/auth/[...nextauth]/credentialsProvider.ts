@@ -3,8 +3,6 @@ import { getClient } from "@/lib/client";
 //import { request } from "graphql-request";
 import { LOGIN } from "../../../graphql/mutations/auth";
 
-const uri = "http://localhost:4000/graphql";
-
 export const credentialsProvider = CredentialsProvider({
   name: "Credentials",
   credentials: {
@@ -31,7 +29,7 @@ export const credentialsProvider = CredentialsProvider({
       return {
         accessToken: data.login.accessToken,
         refreshToken: data.login.refreshToken,
-        accessTokenExpires: Date.now() + 10000,
+        accessTokenExpires: Date.now() + 24 * 60 * 60 * 1000,
         id: data.login.user.id,
         email: data.login.user.email,
         name: data.login.user.userName

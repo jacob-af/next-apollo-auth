@@ -10,7 +10,7 @@ export const { getClient } = registerApolloClient(async () => {
   return new ApolloClient({
     cache: new InMemoryCache(),
     link: new HttpLink({
-      uri: process.env.GQL_API_URL,
+      uri: process.env.NEXT_PUBLIC_GQL_API_URL,
       headers: {
         authorization: session?.user.accessToken
           ? `Bearer ${session?.user.accessToken}`

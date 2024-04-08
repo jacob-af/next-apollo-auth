@@ -9,9 +9,8 @@ import { useState } from "react";
 
 export default async function Landing() {
   const session = await auth();
-  console.log(session?.status, "session stuff");
-  if (!session || !session.user) {
-    redirect("/login");
+  if (!session?.user) {
+    redirect("/");
   }
 
   const client = await getClient();
