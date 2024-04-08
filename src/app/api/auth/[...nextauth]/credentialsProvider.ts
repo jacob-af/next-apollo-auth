@@ -3,7 +3,7 @@ import { getClient } from "@/lib/client";
 //import { request } from "graphql-request";
 import { LOGIN } from "../../../graphql/mutations/auth";
 import { AuthPayload } from "@/__generated__/graphql";
-import { FetchResult } from "@apollo/client";
+import { FetchResult, QueryResult } from "@apollo/client";
 
 export const credentialsProvider = CredentialsProvider({
   name: "Credentials",
@@ -19,7 +19,7 @@ export const credentialsProvider = CredentialsProvider({
     const client = await getClient();
     console.log("ding");
     try {
-      const { data }: any = await client.mutate({
+      const { data }: FetchResult<any> = await client.mutate({
         mutation: LOGIN,
         variables: {
           loginInput: {
@@ -28,18 +28,18 @@ export const credentialsProvider = CredentialsProvider({
           }
         }
       });
+      const login = data.login;
       console.log(data?.login, ": data");
-      if (data?.login) {
+      if (data.login) {
         return {
-          accessToken: data?.login?.accessToken,
-          refreshToken: data?.login?.refreshToken,
+          accessToken: login.accessToken,
+          refreshToken: login.refreshToken,
           accessTokenExpires: Date.now() + 24 * 60 * 60 * 1000,
-          id: data?.login?.user.id,
-          email: data?.login?.user.email,
-          name: data?.login.user.userName
+          id: login.user.id,
+          email: login.user.email,
+          name: login.user.userName
         };
       }
-      return { bad: "data" };
     } catch (err) {
       console.log(err);
     }

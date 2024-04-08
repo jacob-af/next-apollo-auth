@@ -10,7 +10,8 @@ export default function AmILoggedIn() {
     if (status !== "authenticated") {
       redirect("/dashboard");
     }
-    if (session.user.accessTokenExpires < Date.now()) {
+
+    if (session.user && session?.user?.accessTokenExpires < Date.now()) {
       update({ action: "New Tokens" });
     }
   });

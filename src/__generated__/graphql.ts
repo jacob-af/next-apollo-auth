@@ -120,8 +120,7 @@ export type MutationFollowUserArgs = {
 
 
 export type MutationGetNewTokensArgs = {
-  refreshToken: Scalars['String']['input'];
-  userId?: InputMaybe<Scalars['ID']['input']>;
+  refreshToken?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -157,6 +156,12 @@ export type MutationUnblockUserArgs = {
 
 export type MutationUpdateIngredientArgs = {
   updateIngredientInput: UpdateIngredientInput;
+};
+
+export type NewTokenResponse = {
+  __typename?: 'NewTokenResponse';
+  accessToken: Scalars['String']['output'];
+  refreshToken: Scalars['String']['output'];
 };
 
 export type Query = {
@@ -204,14 +209,12 @@ export type UpdateUserInput = {
 
 export type User = {
   __typename?: 'User';
-  accessToken: Scalars['String']['output'];
   dateJoined?: Maybe<Scalars['DateTime']['output']>;
   email: Scalars['EmailAddress']['output'];
   followedBy?: Maybe<Array<Maybe<Follower>>>;
   following?: Maybe<Array<Maybe<Following>>>;
   id: Scalars['ID']['output'];
   lastEdited?: Maybe<Scalars['DateTime']['output']>;
-  refreshToken: Scalars['String']['output'];
   userName: Scalars['String']['output'];
 };
 
