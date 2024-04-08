@@ -1,8 +1,8 @@
-import { AuthPayload, NewTokenResponse } from "@/__generated__/graphql";
+import { AuthPayload } from "@/__generated__/graphql";
 import { gql, TypedDocumentNode } from "@apollo/client";
 
 export const LOGIN: TypedDocumentNode<AuthPayload> = gql`
-  mutation Mutation($loginInput: LoginInput!) {
+  mutation Login($loginInput: LoginInput!) {
     login(loginInput: $loginInput) {
       accessToken
       refreshToken
@@ -30,7 +30,7 @@ export const SIGNUP: TypedDocumentNode<AuthPayload> = gql`
 `;
 
 export const NEW_TOKENS: TypedDocumentNode<AuthPayload> = gql`
-  mutation GetTokens($refreshToken: String) {
+  mutation GetTokens($refreshToken: String!) {
     getNewTokens(refreshToken: $refreshToken) {
       accessToken
       refreshToken
@@ -44,7 +44,7 @@ export const NEW_TOKENS: TypedDocumentNode<AuthPayload> = gql`
 `;
 
 export const LOG_OUT: TypedDocumentNode<string> = gql`
-  mutation Mutation($userId: ID!) {
+  mutation LogOut($userId: ID!) {
     logout(userId: $userId) {
       loggedOut
     }

@@ -19,11 +19,6 @@ type LogoutResponse {
   loggedOut: Boolean!
 }
 
-type NewTokenResponse {
-  accessToken: String!
-  refreshToken: String!
-}
-
 type Query {
   hello: String!
   ingredients: [Ingredient]!
@@ -33,10 +28,10 @@ type Query {
 }
 
 type Mutation {
-  login(loginInput: LoginInput!): AuthPayload
-  signup(createUserInput: CreateUserInput!): AuthPayload
-  logout(userId: ID!): LogoutResponse
-  getNewTokens(userId: ID, refreshToken: String): NewTokenResponse
+  login(loginInput: LoginInput!): AuthPayload!
+  signup(createUserInput: CreateUserInput!): AuthPayload!
+  logout(userId: ID!): LogoutResponse!
+  getNewTokens(userId: ID, refreshToken: String!): AuthPayload!
   createIngredient(createIngredientInput: CreateIngredientInput!): Ingredient!
   createManyIngredient(createIngredientInputs: [CreateIngredientInput]!): StatusMessage!
   updateIngredient(updateIngredientInput: UpdateIngredientInput!): Ingredient!
@@ -87,8 +82,8 @@ type User {
   email: EmailAddress!
   dateJoined: DateTime
   lastEdited: DateTime
-  accessToken: String
-  refreshToken: String
+  accessToken: String!
+  refreshToken: String!
   following: [Following]
   followedBy: [Follower]
 }
