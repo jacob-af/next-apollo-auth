@@ -10,6 +10,9 @@ const config: CodegenConfig = {
       plugins: [],
       presetConfig: {
         gqlTagName: "gql"
+      },
+      config: {
+        useIndexSignature: true
       }
     }
   },

@@ -22,11 +22,9 @@ function Button() {
                 ? `Bearer ${session?.user?.accessToken}`
                 : ""
             }
-          },
-          onCompleted: () => {
-            signOut({ callbackUrl: process.env.NEXTAUTH_URL, redirect: true });
           }
         });
+        signOut({ callbackUrl: process.env.NEXTAUTH_URL, redirect: true });
       }
       return;
     } catch (err) {

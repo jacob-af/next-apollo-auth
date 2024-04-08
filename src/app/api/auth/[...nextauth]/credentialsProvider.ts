@@ -19,18 +19,20 @@ export const credentialsProvider = CredentialsProvider({
     const client = await getClient();
     console.log("ding");
     try {
-      const { data }: FetchResult<any> = await client.mutate({
-        mutation: LOGIN,
-        variables: {
-          loginInput: {
-            email: credentials?.email,
-            password: credentials?.password
+      const { data }: FetchResult<{ login: AuthPayload }> = await client.mutate(
+        {
+          mutation: LOGIN,
+          variables: {
+            loginInput: {
+              email: credentials?.email,
+              password: credentials?.password
+            }
           }
         }
-      });
-      const login = data.login;
-      console.log(data?.login, ": data");
-      if (data.login) {
+      );
+      const login = data?.login;
+      console.log(login, ": data");
+      if (login) {
         return {
           accessToken: login.accessToken,
           refreshToken: login.refreshToken,

@@ -1,7 +1,7 @@
 import { AuthPayload } from "@/__generated__/graphql";
 import { gql, TypedDocumentNode } from "@apollo/client";
 
-export const LOGIN: TypedDocumentNode<AuthPayload> = gql`
+export const LOGIN = gql`
   mutation Login($loginInput: LoginInput!) {
     login(loginInput: $loginInput) {
       accessToken
