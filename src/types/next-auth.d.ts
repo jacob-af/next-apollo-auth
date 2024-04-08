@@ -16,4 +16,13 @@ declare module "next-auth" {
     email: string;
     name: string;
   }
+
+  export interface Token {
+    accessToken: string;
+    refreshToken: string;
+    accessTokenExpires: Date;
+    id: string;
+    email: string;
+    name: string;
+  }
 }
