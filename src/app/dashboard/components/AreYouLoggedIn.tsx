@@ -8,7 +8,7 @@ export default function AmILoggedIn() {
   const { data: session, status, update } = useSession();
   useEffect(() => {
     if (status !== "authenticated") {
-      redirect("/dashboard");
+      redirect("/login");
     }
 
     if (session.user && session?.user?.accessTokenExpires < Date.now()) {

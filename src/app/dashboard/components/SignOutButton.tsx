@@ -31,7 +31,7 @@ function Button() {
           // }
         });
         console.log(data?.loggedOut);
-        signOut({ callbackUrl: process.env.NEXTAUTH_URL, redirect: true });
+        await signOut({ callbackUrl: "/welcome", redirect: true });
       }
       return;
     } catch (err) {

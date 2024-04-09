@@ -1,16 +1,10 @@
 import { getClient } from "@/lib/client";
 import { ALL_INGREDIENTS, ALL_USERS } from "../graphql/queries/allUsers";
-import { redirect } from "next/navigation";
-import { auth } from "@/app/Apollo/auth";
-import { ApolloQueryResult } from "@apollo/client";
-import { Ingredient } from "@/__generated__/graphql";
+//import { auth } from "@/app/Apollo/auth";
 import AuthButton from "./components/SignOutButton";
 
 export default async function Landing() {
-  const session = await auth();
-  if (!session?.user) {
-    redirect("/");
-  }
+  //const session = await auth();
 
   // const client = await getClient();
   // const res: ApolloQueryResult<{ ingredients: Ingredient[] }> =
