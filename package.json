@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.9.10",
+    "@apollo/client-react-streaming": "^0.10.0",
     "@apollo/experimental-nextjs-app-support": "^0.9.1",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",

@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { auth } from "@/app/components/auth";
+import { auth } from "@/app/Apollo/auth";
 
 export default async function RecipeBook() {
   const session = await auth();

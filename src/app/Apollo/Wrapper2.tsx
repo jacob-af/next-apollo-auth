@@ -1,21 +1,33 @@
 "use client";
 
-import { ApolloLink, HttpLink } from "@apollo/client";
+import { HttpLink, ApolloLink } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import {
   ApolloNextAppProvider,
-  NextSSRInMemoryCache,
   NextSSRApolloClient,
-  SSRMultipartLink
+  SSRMultipartLink,
+  NextSSRInMemoryCache
 } from "@apollo/experimental-nextjs-app-support/ssr";
-import { getSession } from "next-auth/react";
+
+import { authTokens } from "@/app/Apollo/authTokens";
+
+const authLink = setContext((_, { headers }) => {
+  if (!authTokens()) return { headers: { ...headers } };
+
+  const token = authTokens();
+  return {
+    headers: {
+      ...headers,
+      Authorization: token ? `Bearer ${token}` : ""
+    }
+  };
+});
 
 function makeClient() {
   const httpLink = new HttpLink({
     uri: process.env.NEXT_PUBLIC_GQL_API_URL,
-    fetchOptions: { cache: "no-store" },
-    headers: {}
+    fetchOptions: { cache: "no-store" }
   });
-
   return new NextSSRApolloClient({
     cache: new NextSSRInMemoryCache(),
     link:
@@ -24,13 +36,12 @@ function makeClient() {
             new SSRMultipartLink({
               stripDefer: true
             }),
-            httpLink
+            authLink.concat(httpLink)
           ])
-        : httpLink
+        : authLink.concat(httpLink)
   });
 }
 
-// you need to create a component to wrap your app in
 export function ApolloWrapper({ children }: React.PropsWithChildren) {
   return (
     <ApolloNextAppProvider makeClient={makeClient}>

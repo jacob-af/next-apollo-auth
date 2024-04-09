@@ -1,29 +1,36 @@
 "use client";
+export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
-import { useMutation } from "@apollo/client";
+import {
+  ApolloPayloadResult,
+  FetchResult,
+  QueryResult,
+  useMutation
+} from "@apollo/client";
 import { LOG_OUT } from "../../graphql/mutations/auth";
 import { useRouter } from "next/navigation";
+import { authTokens } from "@/app/Apollo/authTokens";
 
 function Button() {
   const router = useRouter();
   const { data: session } = useSession();
   const [logOut, { loading }] = useMutation(LOG_OUT);
+  authTokens(session?.user.accessToken);
 
   const onClick = async () => {
     try {
       if (session) {
-        await logOut({
-          variables: { userId: session?.user.id },
-          context: {
-            headers: {
-              Authorization: session?.user.accessToken
-                ? `Bearer ${session?.user?.accessToken}`
-                : ""
-            }
-          }
+        const { data }: FetchResult<{ loggedOut: boolean }> = await logOut({
+          variables: { userId: session?.user.id }
+          // context: {
+          //   headers: {
+          //     Authorization: authTokens() ? `Bearer ${authTokens()}` : ""
+          //   }
+          // }
         });
+        console.log(data?.loggedOut);
         signOut({ callbackUrl: process.env.NEXTAUTH_URL, redirect: true });
       }
       return;

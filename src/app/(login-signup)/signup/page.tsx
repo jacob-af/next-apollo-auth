@@ -15,7 +15,7 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { useMutation, FetchResult } from "@apollo/client";
-import { Copyright } from "../../components/Copyright";
+import { Copyright } from "../../SharedComponents/Copyright";
 import { SIGNUP } from "@/app/graphql/mutations/auth";
 import { signIn } from "next-auth/react";
 import { AuthPayload } from "@/__generated__/graphql";

@@ -15,7 +15,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { Copyright } from "../../components/Copyright";
+import { Copyright } from "../../SharedComponents/Copyright";
 
 export default function LogInSide() {
   const router = useRouter();

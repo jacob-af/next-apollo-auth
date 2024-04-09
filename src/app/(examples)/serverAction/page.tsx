@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { auth } from "@/app/components/auth";
+import { auth } from "@/app/Apollo/auth";
 
 import WhoAmIButton from "./WhoAmIButton";
 

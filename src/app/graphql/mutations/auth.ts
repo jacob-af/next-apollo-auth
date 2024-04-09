@@ -43,7 +43,7 @@ export const NEW_TOKENS: TypedDocumentNode<AuthPayload> = gql`
   }
 `;
 
-export const LOG_OUT: TypedDocumentNode<string> = gql`
+export const LOG_OUT = gql`
   mutation LogOut($userId: ID!) {
     logout(userId: $userId) {
       loggedOut

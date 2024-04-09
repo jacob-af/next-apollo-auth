@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import SessionProvider from "@/app/components/SessionProvider";
+import SessionProvider from "@/app/Apollo/SessionProvider";
 import { getSession } from "next-auth/react";
-import { ApolloWrapper } from "./components/ApolloWrapper";
+import { ApolloWrapper } from "./Apollo/ApolloWrapper";
 
 import { Session } from "next-auth";
 
